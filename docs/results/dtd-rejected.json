@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "forbidden_declaration",
+    "message": "DTD and custom entity declarations are not supported."
+  }
+}

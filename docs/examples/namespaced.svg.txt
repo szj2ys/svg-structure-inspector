@@ -1,0 +1,6 @@
+<s:svg xmlns:s="http://www.w3.org/2000/svg" xmlns:other="urn:example:metadata" viewBox="0 0 20 20">
+  <!-- These are comment text, not elements: <image/> <path/> <!DOCTYPE svg> -->
+  <s:path d="M2 10 L8 16 L18 3" fill="none" stroke="#222"/>
+  <s:text x="1" y="19" font-size="3">A &amp; B</s:text>
+  <other:image>Not an SVG image element</other:image>
+</s:svg>

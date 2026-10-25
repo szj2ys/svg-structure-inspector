@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 360,
+  "total_elements": 4,
+  "svg_element_counts": {
+    "path": 1,
+    "svg": 1,
+    "text": 1
+  },
+  "non_svg_elements": 1,
+  "image_references": [],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "foreign_content_not_inspected",
+    "hidden_and_definition_elements_included",
+    "path_data_not_validated",
+    "text_layout_not_evaluated"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "error": {
+    "code": "malformed_xml",
+    "message": "XML could not be parsed.",
+    "line": 1,
+    "column": 48
+  }
+}

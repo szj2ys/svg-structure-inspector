@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 668,
+  "total_elements": 9,
+  "svg_element_counts": {
+    "feImage": 1,
+    "filter": 1,
+    "foreignObject": 1,
+    "rect": 1,
+    "script": 1,
+    "style": 1,
+    "svg": 1,
+    "use": 1
+  },
+  "non_svg_elements": 1,
+  "image_references": [
+    {
+      "element": "feImage",
+      "index": 1,
+      "attribute": "href",
+      "scope": "external",
+      "content_hint": "raster",
+      "basis": "filename_extension"
+    }
+  ],
+  "use_references": [
+    {
+      "index": 1,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "not_checked_with_xml_base"
+    }
+  ],
+  "duplicate_id_count": 0,
+  "signals": {
+    "event_attributes": 1,
+    "processing_instructions": 1,
+    "script_elements": 1
+  },
+  "unresolved": [
+    "appearance_not_evaluated",
+    "event_handlers_not_executed",
+    "external_resources_not_loaded",
+    "foreign_content_not_inspected",
+    "hidden_and_definition_elements_included",
+    "image_type_inferred_from_filename",
+    "scripts_not_executed",
+    "styles_not_evaluated",
+    "stylesheets_not_loaded",
+    "unresolved_use_reference",
+    "use_targets_not_expanded",
+    "xml_base_not_resolved"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 250,
+  "total_elements": 4,
+  "svg_element_counts": {
+    "circle": 1,
+    "rect": 1,
+    "svg": 1,
+    "text": 1
+  },
+  "non_svg_elements": 0,
+  "image_references": [],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "hidden_and_definition_elements_included",
+    "text_layout_not_evaluated"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}

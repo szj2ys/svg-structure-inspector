@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 663,
+  "total_elements": 6,
+  "svg_element_counts": {
+    "image": 5,
+    "svg": 1
+  },
+  "non_svg_elements": 0,
+  "image_references": [
+    {
+      "element": "image",
+      "index": 1,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "svg",
+      "basis": "declared_media_type"
+    },
+    {
+      "element": "image",
+      "index": 2,
+      "attribute": "xlink:href",
+      "scope": "external",
+      "content_hint": "svg",
+      "basis": "filename_extension"
+    },
+    {
+      "element": "image",
+      "index": 3,
+      "attribute": "href",
+      "scope": "external",
+      "content_hint": "raster",
+      "basis": "filename_extension"
+    },
+    {
+      "element": "image",
+      "index": 4,
+      "attribute": "href",
+      "scope": "external",
+      "content_hint": "unknown",
+      "basis": "none"
+    },
+    {
+      "element": "image",
+      "index": 5,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "unknown",
+      "basis": "declared_media_type"
+    }
+  ],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "embedded_image_contents_not_decoded",
+    "external_resources_not_loaded",
+    "hidden_and_definition_elements_included",
+    "image_type_inferred_from_filename",
+    "unknown_image_content"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}

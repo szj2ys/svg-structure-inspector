@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20">
+  <!-- Original 1 x 1 RGB PNG, generated from the pixel (0, 102, 204). -->
+  <image x="0" y="0" width="20" height="20" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNgSDsDAAGcATPhsmC5AAAAAElFTkSuQmCC"/>
+  <rect x="20" y="0" width="20" height="20" fill="#ffcc66"/>
+</svg>

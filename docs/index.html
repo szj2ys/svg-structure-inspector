@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Read an SVG structure report | SVG Structure Inspector</title>
+  <meta name="description" content="Interpret SVG Structure Inspector JSON using six original, reproducible examples. Learn what shapes, image references and reuse establish, and what to inspect next.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Read an SVG structure report">
+  <meta property="og:description" content="Six original SVG examples connect actual inspector JSON to the source, its limits, and the next practical check.">
+  <meta property="og:url" content="https://szj2ys.github.io/svg-structure-inspector/">
+  <meta property="og:image" content="https://szj2ys.github.io/svg-structure-inspector/assets/structure-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Original structural diagram showing an embedded PNG object beside a rectangle element.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <link rel="canonical" href="https://szj2ys.github.io/svg-structure-inspector/">
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#content">Skip to the guide</a>
+<header class="site-header">
+  <a class="wordmark" href="./">SVG Structure Inspector</a>
+  <span class="edition">v0.1.0 · field guide</span>
+</header>
+<div class="layout">
+  <nav class="contents" aria-label="Guide contents">
+    <h2>In this guide</h2>
+    <ol>
+      <li><a href="#start">Run the examples</a></li>
+      <li><a href="#shapes">Shapes without paths</a></li>
+      <li><a href="#mixed">Mixed artwork</a></li>
+      <li><a href="#images">Image references</a></li>
+      <li><a href="#reuse">Reused content</a></li>
+      <li><a href="#namespaces">Names and namespaces</a></li>
+      <li><a href="#unknowns">Read the unknowns</a></li>
+      <li><a href="#boundaries">Limits and errors</a></li>
+    </ol>
+    <a class="source-link" href="https://github.com/szj2ys/svg-structure-inspector">Source repository ↗</a>
+  </nav>
+  <main id="content" tabindex="-1">
+    <p class="eyebrow">An inventory, then an investigation</p>
+    <h1>Read an SVG<br>structure report.</h1>
+    <p class="lede">A path count is a starting point. Work through six small SVGs to connect the inspector’s JSON to the source, separate evidence from assumptions, and decide what to check next.</p>
+    <div class="boundary"><p><strong>The boundary:</strong> this Python tool inventories XML. It does not render, trace, optimize or sanitize artwork. Counts cannot certify visual completeness, editability, security or suitability for cutting.</p></div>
+
+    <section id="start" aria-labelledby="start-title">
+      <p class="eyebrow">01 · Reproduce the evidence</p>
+      <h2 id="start-title">Start with a known file.</h2>
+      <p>Download the example bundle and extract it. Open a terminal in the extracted folder that contains <code>svg_structure_inspector.py</code>. Use a maintained Python release with Python 3.10+ syntax support; no third-party package or account is required.</p>
+      <p><a class="download" href="downloads/svg-structure-inspector-examples.zip" download>Download the example bundle</a> <span class="small">ZIP · 7.7 KiB · CLI, eight original fixtures and MIT license</span></p>
+      <pre class="command" tabindex="0" aria-label="Commands to inspect three example files"><code>python svg_structure_inspector.py fixtures/shapes-only.svg
+python svg_structure_inspector.py fixtures/mixed.svg
+python svg_structure_inspector.py fixtures/reuse.svg</code></pre>
+      <p>If your Python command is <code>python3</code>, use that name instead. If the command cannot find a file, check your current folder and keep the bundle’s <code>fixtures/</code> directory beside the script. The tool reads local files; it does not fetch the references inside them.</p>
+      <p>Each lesson links the complete source as inert text and the actual JSON result. Displayed JSON blocks are <strong>excerpts</strong>, not complete reports. The bundled fixtures and CLI come from <a href="https://github.com/szj2ys/svg-structure-inspector/tree/2d675e371865945e3d8809a27fe6ab656d6e7b88">source revision <code>2d675e3</code></a>; the results were reproduced on 25 October 2026.</p>
+      <p class="question">Your task: what does the report establish, what remains unknown, and which check would resolve that uncertainty?</p>
+    </section>
+
+    <section id="shapes" aria-labelledby="shapes-title">
+      <p class="eyebrow">02 · shapes-only.svg</p>
+      <h2 id="shapes-title">Zero paths can still describe shapes.</h2>
+      <p>This fixture contains a rectangle, a circle and text. The report has no <code>path</code> key because an omitted element name has a count of zero. That tells you which XML elements were found; it does not reduce the drawing to a yes-or-no “vector” label.</p>
+      <figure>
+        <img src="assets/shapes.svg" width="360" height="130" loading="lazy" decoding="async" alt="A rectangle, circle and text glyph illustrate three drawing elements that do not require path elements.">
+        <figcaption>A structural illustration of the fixture’s three drawing elements. The inspector produces JSON, not this picture.</figcaption>
+      </figure>
+      <p class="snippet-label">JSON excerpt · counts and image references</p>
+      <pre tabindex="0" aria-label="Shapes-only JSON excerpt"><code data-fixture="shapes-only">{
+  "svg_element_counts": {
+    "circle": 1,
+    "rect": 1,
+    "svg": 1,
+    "text": 1
+  },
+  "image_references": []
+}</code></pre>
+      <div class="evidence-views" data-evidence="shapes-only">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· shapes-only.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for shapes-only.svg"><code data-full-source="shapes-only">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60"&gt;
+  &lt;rect x="4" y="4" width="44" height="44" fill="#66aaff"/&gt;
+  &lt;circle cx="82" cy="26" r="20" fill="#ffcc66"/&gt;
+  &lt;text x="4" y="58" font-size="8"&gt;Shapes without path elements&lt;/text&gt;
+&lt;/svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/shapes-only.svg.txt" download="shapes-only.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+        <details class="evidence-view">
+          <summary>View complete JSON <span class="evidence-name">· shapes-only.svg</span></summary>
+          <p class="small">Complete CLI output for this fixture.</p>
+          <pre tabindex="0" aria-label="Complete JSON for shapes-only.svg"><code data-full-json="shapes-only">{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 250,
+  "total_elements": 4,
+  "svg_element_counts": {
+    "circle": 1,
+    "rect": 1,
+    "svg": 1,
+    "text": 1
+  },
+  "non_svg_elements": 0,
+  "image_references": [],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "hidden_and_definition_elements_included",
+    "text_layout_not_evaluated"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}
+</code></pre>
+          <p class="example-files"><a href="results/shapes-only.json" download="shapes-only.json">Download raw JSON (.json)</a></p>
+        </details>
+      </div>
+      <dl class="interpretation">
+        <dt>Established</dt><dd>The parser found one SVG rectangle, one circle and one text element, plus the root <code>svg</code>. It found no <code>image</code> or <code>feImage</code> references.</dd>
+        <dt>Still unknown</dt><dd>The intended appearance and text layout. In a different document, styles, definitions or referenced content could affect what is drawn. No-image counts do not certify raster absence throughout every SVG feature.</dd>
+      </dl>
+      <div class="next-check"><h3>Next check</h3><p>Open a copy in a trusted vector editor and inspect the object types. If a downstream workflow requires outlines, check how it handles the text and its fonts. Do not retrace the whole file merely because its path count is zero.</p></div>
+    </section>
+
+    <section id="mixed" aria-labelledby="mixed-title">
+      <p class="eyebrow">03 · mixed.svg</p>
+      <h2 id="mixed-title">An image and a shape can coexist.</h2>
+      <p>The source places an original one-pixel blue PNG next to a gold rectangle. Look at the image entry’s three different answers: <code>scope</code> describes how it is referenced, <code>content_hint</code> suggests a type, and <code>basis</code> explains the evidence for that suggestion.</p>
+      <figure>
+        <img src="assets/mixed.svg" width="360" height="180" loading="lazy" decoding="async" alt="A blue embedded PNG object sits beside a gold rectangle object, with their element types labeled.">
+        <figcaption>Diagram of the original fixture. Its blue pixel is known from the fixture source; the inspector does not decode the embedded PNG.</figcaption>
+      </figure>
+      <pre class="command" tabindex="0" aria-label="Inspect the mixed fixture"><code>python svg_structure_inspector.py fixtures/mixed.svg</code></pre>
+      <p class="snippet-label">JSON excerpt · image reference</p>
+      <pre tabindex="0" aria-label="Mixed fixture JSON excerpt"><code data-fixture="mixed">{
+  "image_references": [
+    {
+      "element": "image",
+      "index": 1,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "raster",
+      "basis": "declared_media_type"
+    }
+  ]
+}</code></pre>
+      <div class="evidence-views" data-evidence="mixed">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· mixed.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for mixed.svg"><code data-full-source="mixed">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20"&gt;
+  &lt;!-- Original 1 x 1 RGB PNG, generated from the pixel (0, 102, 204). --&gt;
+  &lt;image x="0" y="0" width="20" height="20" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNgSDsDAAGcATPhsmC5AAAAAElFTkSuQmCC"/&gt;
+  &lt;rect x="20" y="0" width="20" height="20" fill="#ffcc66"/&gt;
+&lt;/svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/mixed.svg.txt" download="mixed.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+        <details class="evidence-view">
+          <summary>View complete JSON <span class="evidence-name">· mixed.svg</span></summary>
+          <p class="small">Complete CLI output for this fixture.</p>
+          <pre tabindex="0" aria-label="Complete JSON for mixed.svg"><code data-full-json="mixed">{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 372,
+  "total_elements": 3,
+  "svg_element_counts": {
+    "image": 1,
+    "rect": 1,
+    "svg": 1
+  },
+  "non_svg_elements": 0,
+  "image_references": [
+    {
+      "element": "image",
+      "index": 1,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "raster",
+      "basis": "declared_media_type"
+    }
+  ],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "embedded_image_contents_not_decoded",
+    "hidden_and_definition_elements_included"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}
+</code></pre>
+          <p class="example-files"><a href="results/mixed.json" download="mixed.json">Download raw JSON (.json)</a></p>
+        </details>
+      </div>
+      <dl class="interpretation">
+        <dt>Established</dt><dd>One <code>image</code> element and one <code>rect</code> element exist. The image has a data URI declaring a recognized raster media type.</dd>
+        <dt>Still unknown</dt><dd>Whether that declaration matches the bytes, whether the image is visible, and how much of the intended artwork depends on it. A byte reduction after removing image markup answers a storage question, not a visual one.</dd>
+      </dl>
+      <div class="next-check"><h3>Next check</h3><p>In a copy, hide the image object and compare the appearance with the original. This particular fixture then loses its blue half while retaining the rectangle. For another SVG, make that comparison before deciding whether to keep the image, replace it or trace it.</p></div>
+    </section>
+
+    <section id="images" aria-labelledby="images-title">
+      <p class="eyebrow">04 · image-references.svg</p>
+      <h2 id="images-title">A reference is evidence about a reference.</h2>
+      <p>Five <code>image</code> elements produce five entries. They do not imply five verified bitmaps. This table maps each original source reference to its reported classification. None of the external resources is opened.</p>
+      <pre class="command" tabindex="0" aria-label="Inspect the image references fixture"><code>python svg_structure_inspector.py fixtures/image-references.svg</code></pre>
+      <div class="reference-comparison">
+        <table class="references-table">
+          <caption>All five image-reference entries, in document order</caption>
+          <thead><tr><th scope="col">Source clue</th><th scope="col">Scope</th><th scope="col">Hint</th><th scope="col">Basis</th></tr></thead>
+          <tbody>
+            <tr data-reference-index="1"><td>1 · <code>data:image/svg+xml,…</code></td><td data-label="Scope"><code>data</code></td><td data-label="Hint"><code>svg</code></td><td data-label="Basis"><code>declared_media_type</code></td></tr>
+            <tr data-reference-index="2"><td>2 · <code>xlink:href</code> ending in <code>logo.SVG?revision=1</code></td><td data-label="Scope"><code>external</code></td><td data-label="Hint"><code>svg</code></td><td data-label="Basis"><code>filename_extension</code></td></tr>
+            <tr data-reference-index="3"><td>3 · <code>relative-assets/photo.png</code></td><td data-label="Scope"><code>external</code></td><td data-label="Hint"><code>raster</code></td><td data-label="Basis"><code>filename_extension</code></td></tr>
+            <tr data-reference-index="4"><td>4 · URL with no recognized extension</td><td data-label="Scope"><code>external</code></td><td data-label="Hint"><code>unknown</code></td><td data-label="Basis"><code>none</code></td></tr>
+            <tr data-reference-index="5"><td>5 · <code>data:application/octet-stream,…</code></td><td data-label="Scope"><code>data</code></td><td data-label="Hint"><code>unknown</code></td><td data-label="Basis"><code>declared_media_type</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="snippet-label">JSON excerpt · first image entry, with its original array wrapper</p>
+      <pre tabindex="0" aria-label="First image reference JSON excerpt"><code data-fixture="image-references" data-excerpt-array="image_references">{
+  "image_references": [
+    {
+      "element": "image",
+      "index": 1,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "svg",
+      "basis": "declared_media_type"
+    }
+  ]
+}</code></pre>
+      <div class="evidence-views" data-evidence="image-references">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· image-references.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for image-references.svg"><code data-full-source="image-references">&lt;svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 10"&gt;
+  &lt;image width="10" height="10" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3Crect%20width='1'%20height='1'%20fill='green'/%3E%3C/svg%3E"/&gt;
+  &lt;image x="10" width="10" height="10" xlink:href="https://example.invalid/logo.SVG?revision=1"/&gt;
+  &lt;image x="20" width="10" height="10" href="relative-assets/photo.png"/&gt;
+  &lt;image x="30" width="10" height="10" href="https://example.invalid/image-without-extension"/&gt;
+  &lt;image x="40" width="10" height="10" href="data:application/octet-stream;base64,AA=="/&gt;
+&lt;/svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/image-references.svg.txt" download="image-references.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+        <details class="evidence-view">
+          <summary>View complete JSON <span class="evidence-name">· image-references.svg</span></summary>
+          <p class="small">Complete CLI output for this fixture.</p>
+          <pre tabindex="0" aria-label="Complete JSON for image-references.svg"><code data-full-json="image-references">{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 663,
+  "total_elements": 6,
+  "svg_element_counts": {
+    "image": 5,
+    "svg": 1
+  },
+  "non_svg_elements": 0,
+  "image_references": [
+    {
+      "element": "image",
+      "index": 1,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "svg",
+      "basis": "declared_media_type"
+    },
+    {
+      "element": "image",
+      "index": 2,
+      "attribute": "xlink:href",
+      "scope": "external",
+      "content_hint": "svg",
+      "basis": "filename_extension"
+    },
+    {
+      "element": "image",
+      "index": 3,
+      "attribute": "href",
+      "scope": "external",
+      "content_hint": "raster",
+      "basis": "filename_extension"
+    },
+    {
+      "element": "image",
+      "index": 4,
+      "attribute": "href",
+      "scope": "external",
+      "content_hint": "unknown",
+      "basis": "none"
+    },
+    {
+      "element": "image",
+      "index": 5,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "unknown",
+      "basis": "declared_media_type"
+    }
+  ],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "embedded_image_contents_not_decoded",
+    "external_resources_not_loaded",
+    "hidden_and_definition_elements_included",
+    "image_type_inferred_from_filename",
+    "unknown_image_content"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}
+</code></pre>
+          <p class="example-files"><a href="results/image-references.json" download="image-references.json">Download raw JSON (.json)</a></p>
+        </details>
+      </div>
+      <p><code>external</code> includes relative filenames; it does not mean “an internet request was made.” An <code>svg</code> hint does not mean “all vector content”: the referenced SVG may itself contain images. A misleading extension or media declaration can also mislead the hint.</p>
+      <p>The <code>attribute</code> field records the chosen spelling. SVG 2 <code>href</code> takes precedence over <code>xlink:href</code>, even when <code>href</code> is empty. Different values add <code>conflicting_href_attributes</code> to <code>unresolved</code>.</p>
+      <div class="next-check"><h3>Next check</h3><p>Locate the referenced asset in a source you trust, verify its actual format, and inspect it separately. Treat <code>unknown</code> as a reason to investigate, not as a raster or vector verdict. The example’s deliberately unavailable URLs are not files you need to download to reproduce its report.</p></div>
+    </section>
+
+    <section id="reuse" aria-labelledby="reuse-title">
+      <p class="eyebrow">05 · reuse.svg</p>
+      <h2 id="reuse-title">Count definitions separately from instances.</h2>
+      <p>The source defines one path inside <code>defs</code>, then contains three <code>use</code> elements. One points to the defined ID, one to a missing ID, and one to another file. The report counts the original XML; it does not turn those references into a rendered tree.</p>
+      <figure>
+        <img src="assets/reuse.svg" width="360" height="270" loading="lazy" decoding="async" alt="Three arrows connect use elements to a present ID, a missing ID and an external file that was not loaded.">
+        <figcaption>The ID names come from this known fixture’s source. The inspector’s JSON deliberately does not echo IDs or reference strings.</figcaption>
+      </figure>
+      <p class="snippet-label">JSON excerpt · counts and all use entries</p>
+      <pre tabindex="0" aria-label="Reuse JSON excerpt"><code data-fixture="reuse">{
+  "svg_element_counts": {
+    "defs": 1,
+    "path": 1,
+    "svg": 1,
+    "use": 3
+  },
+  "use_references": [
+    {
+      "index": 1,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "id_present"
+    },
+    {
+      "index": 2,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "missing_id"
+    },
+    {
+      "index": 3,
+      "attribute": "xlink:href",
+      "scope": "external",
+      "target_status": "not_loaded"
+    }
+  ]
+}</code></pre>
+      <div class="evidence-views" data-evidence="reuse">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· reuse.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for reuse.svg"><code data-full-source="reuse">&lt;svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60 20"&gt;
+  &lt;defs&gt;
+    &lt;path id="tick" d="M2 10 L8 16 L18 3" fill="none" stroke="#222"/&gt;
+  &lt;/defs&gt;
+  &lt;use href="#tick"/&gt;
+  &lt;use href="#missing" x="20"/&gt;
+  &lt;use xlink:href="icons.svg#tick" x="40"/&gt;
+&lt;/svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/reuse.svg.txt" download="reuse.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+        <details class="evidence-view">
+          <summary>View complete JSON <span class="evidence-name">· reuse.svg</span></summary>
+          <p class="small">Complete CLI output for this fixture.</p>
+          <pre tabindex="0" aria-label="Complete JSON for reuse.svg"><code data-full-json="reuse">{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 298,
+  "total_elements": 6,
+  "svg_element_counts": {
+    "defs": 1,
+    "path": 1,
+    "svg": 1,
+    "use": 3
+  },
+  "non_svg_elements": 0,
+  "image_references": [],
+  "use_references": [
+    {
+      "index": 1,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "id_present"
+    },
+    {
+      "index": 2,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "missing_id"
+    },
+    {
+      "index": 3,
+      "attribute": "xlink:href",
+      "scope": "external",
+      "target_status": "not_loaded"
+    }
+  ],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "external_resources_not_loaded",
+    "hidden_and_definition_elements_included",
+    "path_data_not_validated",
+    "unresolved_use_reference",
+    "use_targets_not_expanded"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}
+</code></pre>
+          <p class="example-files"><a href="results/reuse.json" download="reuse.json">Download raw JSON (.json)</a></p>
+        </details>
+      </div>
+      <dl class="interpretation">
+        <dt>Established</dt><dd><code>id_present</code> means one SVG-namespace element has the referenced ID. <code>missing_id</code> means no matching ID was found. The external target is <code>not_loaded</code>.</dd>
+        <dt>Still unknown</dt><dd>Whether a target is a valid type, whether references form a cycle, and how styles or transforms affect each instance. The single path count is not a count of visible objects.</dd>
+      </dl>
+      <div class="next-check"><h3>Next check</h3><p>Follow the references in the source or an editor’s object tree. Check the missing target and the external file before judging appearance. If you need expanded geometry for another tool, inspect that tool’s export or expansion behavior separately.</p></div>
+    </section>
+
+    <section id="namespaces" aria-labelledby="namespaces-title">
+      <p class="eyebrow">06 · namespaced.svg</p>
+      <h2 id="namespaces-title">A tag’s name includes its namespace.</h2>
+      <p>The prefix <code>s:</code> maps to the SVG namespace in this source. The <code>other:</code> prefix maps to a different namespace. A comment also contains tag-looking text. Only parsed SVG elements belong in <code>svg_element_counts</code>.</p>
+      <p class="snippet-label">Source excerpt · the root declares the two namespaces</p>
+      <pre tabindex="0" aria-label="Namespace source excerpt"><code>&lt;s:svg xmlns:s="http://www.w3.org/2000/svg"
+       xmlns:other="urn:example:metadata"&gt;
+  &lt;!-- Comment text: &lt;image/&gt; &lt;path/&gt; --&gt;
+  &lt;s:path d="M2 10 L8 16 L18 3" /&gt;
+  &lt;s:text&gt;A &amp;amp; B&lt;/s:text&gt;
+  &lt;other:image&gt;Not an SVG image element&lt;/other:image&gt;
+&lt;/s:svg&gt;</code></pre>
+      <p class="small">Source excerpt is shortened for explanation; drawing attributes and comment text are abridged. Use the complete fixture for reproduction.</p>
+      <p class="snippet-label">JSON excerpt · namespace-aware counts</p>
+      <pre tabindex="0" aria-label="Namespace JSON excerpt"><code data-fixture="namespaced">{
+  "total_elements": 4,
+  "svg_element_counts": {
+    "path": 1,
+    "svg": 1,
+    "text": 1
+  },
+  "non_svg_elements": 1
+}</code></pre>
+      <div class="evidence-views" data-evidence="namespaced">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· namespaced.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for namespaced.svg"><code data-full-source="namespaced">&lt;s:svg xmlns:s="http://www.w3.org/2000/svg" xmlns:other="urn:example:metadata" viewBox="0 0 20 20"&gt;
+  &lt;!-- These are comment text, not elements: &lt;image/&gt; &lt;path/&gt; &lt;!DOCTYPE svg&gt; --&gt;
+  &lt;s:path d="M2 10 L8 16 L18 3" fill="none" stroke="#222"/&gt;
+  &lt;s:text x="1" y="19" font-size="3"&gt;A &amp;amp; B&lt;/s:text&gt;
+  &lt;other:image&gt;Not an SVG image element&lt;/other:image&gt;
+&lt;/s:svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/namespaced.svg.txt" download="namespaced.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+        <details class="evidence-view">
+          <summary>View complete JSON <span class="evidence-name">· namespaced.svg</span></summary>
+          <p class="small">Complete CLI output for this fixture.</p>
+          <pre tabindex="0" aria-label="Complete JSON for namespaced.svg"><code data-full-json="namespaced">{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 360,
+  "total_elements": 4,
+  "svg_element_counts": {
+    "path": 1,
+    "svg": 1,
+    "text": 1
+  },
+  "non_svg_elements": 1,
+  "image_references": [],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "foreign_content_not_inspected",
+    "hidden_and_definition_elements_included",
+    "path_data_not_validated",
+    "text_layout_not_evaluated"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}
+</code></pre>
+          <p class="example-files"><a href="results/namespaced.json" download="namespaced.json">Download raw JSON (.json)</a></p>
+        </details>
+      </div>
+      <p>The four total elements comprise three SVG elements and one foreign element. Comments are not elements. The foreign <code>other:image</code> is not silently treated as an SVG image, and its contents are not inspected.</p>
+      <div class="next-check"><h3>Next check</h3><p>If a text search and this report disagree, check namespace declarations and comments first. A literal search for <code>&lt;image</code> can miss prefixed tags and count comments; neither result alone establishes the document’s appearance.</p></div>
+    </section>
+
+    <section id="unknowns" aria-labelledby="unknowns-title">
+      <p class="eyebrow">07 · unresolved-features.svg</p>
+      <h2 id="unknowns-title">Let the unknowns guide the next check.</h2>
+      <p>This fixture deliberately includes a stylesheet instruction, style rules, a script, an event attribute, a filter image and foreign content. <strong>It is shown only as text here.</strong> The CLI inventories it without executing scripts or fetching resources.</p>
+      <pre class="command" tabindex="0" aria-label="Inventory the unresolved-features fixture without rendering it"><code>python svg_structure_inspector.py fixtures/unresolved-features.svg</code></pre>
+      <p class="snippet-label">JSON excerpt · signals and the conservative use result</p>
+      <pre tabindex="0" aria-label="Unresolved features JSON excerpt"><code data-fixture="unresolved-features">{
+  "signals": {
+    "event_attributes": 1,
+    "processing_instructions": 1,
+    "script_elements": 1
+  },
+  "use_references": [
+    {
+      "index": 1,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "not_checked_with_xml_base"
+    }
+  ]
+}</code></pre>
+      <div class="evidence-views" data-evidence="unresolved-features">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· unresolved-features.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for unresolved-features.svg"><code data-full-source="unresolved-features">&lt;?xml-stylesheet type="text/css" href="https://example.invalid/theme.css"?&gt;
+&lt;svg xmlns="http://www.w3.org/2000/svg" xml:base="https://example.invalid/assets/" viewBox="0 0 20 20" onload="throw new Error('This must never run')"&gt;
+  &lt;style&gt;.paint { fill: url(https://example.invalid/paint.svg#paint); }&lt;/style&gt;
+  &lt;script&gt;&lt;![CDATA[throw new Error("This must never run");]]&gt;&lt;/script&gt;
+  &lt;rect id="tile" width="20" height="20" class="paint"/&gt;
+  &lt;use href="#tile"/&gt;
+  &lt;filter id="effect"&gt;&lt;feImage href="texture.png"/&gt;&lt;/filter&gt;
+  &lt;foreignObject width="20" height="20"&gt;
+    &lt;p xmlns="http://www.w3.org/1999/xhtml"&gt;Foreign content is not inspected.&lt;/p&gt;
+  &lt;/foreignObject&gt;
+&lt;/svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/unresolved-features.svg.txt" download="unresolved-features.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+        <details class="evidence-view">
+          <summary>View complete JSON <span class="evidence-name">· unresolved-features.svg</span></summary>
+          <p class="small">Complete CLI output for this fixture.</p>
+          <pre tabindex="0" aria-label="Complete JSON for unresolved-features.svg"><code data-full-json="unresolved-features">{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 668,
+  "total_elements": 9,
+  "svg_element_counts": {
+    "feImage": 1,
+    "filter": 1,
+    "foreignObject": 1,
+    "rect": 1,
+    "script": 1,
+    "style": 1,
+    "svg": 1,
+    "use": 1
+  },
+  "non_svg_elements": 1,
+  "image_references": [
+    {
+      "element": "feImage",
+      "index": 1,
+      "attribute": "href",
+      "scope": "external",
+      "content_hint": "raster",
+      "basis": "filename_extension"
+    }
+  ],
+  "use_references": [
+    {
+      "index": 1,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "not_checked_with_xml_base"
+    }
+  ],
+  "duplicate_id_count": 0,
+  "signals": {
+    "event_attributes": 1,
+    "processing_instructions": 1,
+    "script_elements": 1
+  },
+  "unresolved": [
+    "appearance_not_evaluated",
+    "event_handlers_not_executed",
+    "external_resources_not_loaded",
+    "foreign_content_not_inspected",
+    "hidden_and_definition_elements_included",
+    "image_type_inferred_from_filename",
+    "scripts_not_executed",
+    "styles_not_evaluated",
+    "stylesheets_not_loaded",
+    "unresolved_use_reference",
+    "use_targets_not_expanded",
+    "xml_base_not_resolved"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}
+</code></pre>
+          <p class="example-files"><a href="results/unresolved-features.json" download="unresolved-features.json">Download raw JSON (.json)</a></p>
+        </details>
+      </div>
+      <p>The local reference points to an ID that exists, but the document contains <code>xml:base</code>. Whenever any <code>xml:base</code> occurs, this implementation leaves fragment targets at <code>not_checked_with_xml_base</code>. That is a conservative inspection limit, not proof that the reference is broken.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Unresolved fields and useful next checks">
+        <table>
+          <caption>Selected unresolved work in this fixture</caption>
+          <thead><tr><th scope="col">Report clue</th><th scope="col">What to investigate next</th></tr></thead>
+          <tbody>
+            <tr><td><code>styles_not_evaluated</code></td><td>Inspect style rules, inheritance and resource URLs before explaining an object’s fill or visibility.</td></tr>
+            <tr><td><code>external_resources_not_loaded</code></td><td>The filter’s <code>feImage</code> points to <code>texture.png</code>. Locate the actual asset if it is needed for the intended appearance.</td></tr>
+            <tr><td><code>foreign_content_not_inspected</code></td><td>Review the <code>foreignObject</code> and its non-SVG child separately.</td></tr>
+            <tr><td><code>scripts_not_executed</code></td><td>Use a separate, appropriate review process for active content. Neither its presence nor absence is a security verdict.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The <code>signals</code> fields are structural indicators. In this implementation, the event-attribute indicator counts unqualified attribute names beginning with <code>on</code>; it is not a full catalog of executable behavior. An empty <code>signals</code> object does not establish safety.</p>
+      <div class="next-check"><h3>Next check</h3><p>Write down the unresolved dependency that matters to your task. For a missing visual effect, that may be a style or filter resource. For reusable geometry, it may be target expansion. A structure inventory helps choose that investigation; it does not complete it.</p></div>
+    </section>
+
+    <section id="boundaries" aria-labelledby="boundaries-title">
+      <p class="eyebrow">08 · Use the result within its limits</p>
+      <h2 id="boundaries-title">Know what a successful run means.</h2>
+      <p><code>inspection: "structure_only"</code> is the central qualification. The tool does not validate SVG path syntax, evaluate layout or CSS, expand reuse, decode embedded images, or load external resources. Its output does not echo input paths, IDs or reference values.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Inspector input limits">
+        <table class="limits-table">
+          <caption>Input limits in version 0.1.0</caption>
+          <thead><tr><th scope="col">Boundary</th><th scope="col">Accepted input</th></tr></thead>
+          <tbody>
+            <tr><td>Bytes</td><td>At most 1,048,576 bytes (1 MiB)</td></tr>
+            <tr><td>Elements</td><td>At most 10,000 across all namespaces</td></tr>
+            <tr><td>Nesting</td><td>At most 256 levels; the root counts as one</td></tr>
+            <tr><td>Encoding and root</td><td>UTF-8 XML, optional UTF-8 BOM, and <code>svg</code> in <code>http://www.w3.org/2000/svg</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>DTD and custom entity declarations are rejected. Normal XML escapes and numeric character references are allowed. SVGZ, HTML and a root without the SVG namespace are unsupported inputs. An external <code>.svgz</code> filename can still receive an SVG type hint; that does not mean the inspector can open compressed SVGZ input.</p>
+      <details>
+        <summary>Reproduce two rejected inputs</summary>
+        <p>Both commands below return exit code <code>2</code>. They are parser-boundary examples, not artwork to preview.</p>
+        <pre class="command" tabindex="0"><code>python svg_structure_inspector.py fixtures/malformed.svg
+python svg_structure_inspector.py fixtures/dtd-rejected.svg</code></pre>
+        <p class="snippet-label">Complete input-error JSON · malformed.svg</p>
+        <div class="evidence-view" data-error-report="malformed">
+          <pre tabindex="0" aria-label="Complete JSON for malformed.svg"><code data-fixture="malformed" data-full-json="malformed">{
+  "error": {
+    "code": "malformed_xml",
+    "message": "XML could not be parsed.",
+    "line": 1,
+    "column": 48
+  }
+}</code></pre>
+          <p class="example-files"><a href="results/malformed.json" download="malformed.json">Download raw JSON (.json)</a></p>
+        </div>
+        <div class="evidence-views" data-evidence="malformed">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· malformed.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for malformed.svg"><code data-full-source="malformed">&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;&lt;path&gt;&lt;/svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/malformed.svg.txt" download="malformed.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+      </div>
+        <p class="snippet-label">Complete input-error JSON · dtd-rejected.svg</p>
+        <div class="evidence-view" data-error-report="dtd-rejected">
+          <pre tabindex="0" aria-label="Complete JSON for dtd-rejected.svg"><code data-fixture="dtd-rejected" data-full-json="dtd-rejected">{
+  "error": {
+    "code": "forbidden_declaration",
+    "message": "DTD and custom entity declarations are not supported."
+  }
+}</code></pre>
+          <p class="example-files"><a href="results/dtd-rejected.json" download="dtd-rejected.json">Download raw JSON (.json)</a></p>
+        </div>
+        <div class="evidence-views" data-evidence="dtd-rejected">
+        <details class="evidence-view">
+          <summary>View complete source <span class="evidence-name">· dtd-rejected.svg</span></summary>
+          <p class="small">Original fixture, displayed as inert text.</p>
+          <pre tabindex="0" aria-label="Complete source for dtd-rejected.svg"><code data-full-source="dtd-rejected">&lt;!DOCTYPE svg [&lt;!ENTITY example "This declaration must be rejected"&gt;]&gt;
+&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;&lt;text&gt;&amp;example;&lt;/text&gt;&lt;/svg&gt;
+</code></pre>
+          <p class="example-files"><a href="examples/dtd-rejected.svg.txt" download="dtd-rejected.svg.txt">Download raw source (.svg.txt)</a></p>
+        </details>
+      </div>
+        <p>A rejected input can be malformed or simply outside this tool’s supported boundary. Do not interpret every rejection as a universal declaration that the file is invalid SVG.</p>
+      </details>
+      <details>
+        <summary>Exit codes and fields worth keeping straight</summary>
+        <p><code>0</code> means an inventory was produced. <code>1</code> means input could not be read. <code>2</code> means rejected input or incorrect CLI usage. Inventory and input-error JSON go to stdout; incorrect CLI usage instead prints standard usage text to stderr. Help and version output are plain text.</p>
+        <p><code>image_references</code> combines <code>image</code> and <code>feImage</code>, with one-based indexes in their document order. <code>use_references</code> has its own indexes. <code>duplicate_id_count</code> counts identifier names that occur more than once, not the number of extra elements.</p>
+        <p>Definitions and hidden elements are counted. The report does not decide whether an element is drawn. Keep Python and its XML parser updated; these limits do not make the tool a sanitizer.</p>
+      </details>
+      <h3>Try the workflow on your own file</h3>
+      <pre class="command" tabindex="0" aria-label="Inspect a local SVG of your own"><code>python svg_structure_inspector.py "your-file.svg"</code></pre>
+      <p>Record one structural observation, one uncertainty and one next check. For example: “An image has a PNG filename hint; its bytes and visual contribution are unknown; inspect the trusted source asset and compare a copy with that object hidden.” Keep the original file unchanged while investigating.</p>
+    </section>
+
+    <section id="related-workflow" class="maintenance" aria-labelledby="related-title">
+      <h2 id="related-title">When your starting file is a raster image</h2>
+      <p>I maintain this inspector and <a href="https://pic2svg.com/">pic2svg</a>. If tracing is your next step, pic2svg offers free hosted SVG tracing; uploaded images are processed on its server. This offline inspector does not call that service. You can inspect a downloaded SVG with the same local workflow described above.</p>
+    </section>
+    <section id="maintenance" class="maintenance" aria-labelledby="maintenance-title">
+      <h2 id="maintenance-title">Source, maintenance and references</h2>
+      <p>This guide explains version 0.1.0. Its fixtures, illustrations and prose are original project material under the <a href="downloads/LICENSE.txt">MIT license</a>. The license applies to this project, not to a separate hosted service. Downloaded CLI and fixture bytes match the documented source revision; full JSON files were generated by that CLI.</p>
+      <p>For changes or a reproducible mismatch, use the <a href="https://github.com/szj2ys/svg-structure-inspector">source repository</a> or <a href="https://github.com/szj2ys/svg-structure-inspector/issues">issue tracker</a>. Include the tool version and a small non-sensitive example rather than private artwork.</p>
+      <ul>
+        <li>W3C SVG 2: <a href="https://www.w3.org/TR/SVG2/embedded.html#ImageElement">image elements</a> and <a href="https://www.w3.org/TR/SVG2/struct.html#UseElement">reused content</a>.</li>
+        <li>Python documentation: <a href="https://docs.python.org/3/library/xml.html#xml-security">XML processing and security boundaries</a>.</li>
+      </ul>
+    </section>
+  </main>
+</div>
+<footer class="footer"><span>SVG Structure Inspector · Original examples · Updated 25 October 2026</span><a href="#content">Back to the beginning ↑</a></footer>
+</body>
+</html>

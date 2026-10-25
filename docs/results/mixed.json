@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 372,
+  "total_elements": 3,
+  "svg_element_counts": {
+    "image": 1,
+    "rect": 1,
+    "svg": 1
+  },
+  "non_svg_elements": 0,
+  "image_references": [
+    {
+      "element": "image",
+      "index": 1,
+      "attribute": "href",
+      "scope": "data",
+      "content_hint": "raster",
+      "basis": "declared_media_type"
+    }
+  ],
+  "use_references": [],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "embedded_image_contents_not_decoded",
+    "hidden_and_definition_elements_included"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}

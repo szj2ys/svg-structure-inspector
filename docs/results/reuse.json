@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "inspection": "structure_only",
+  "input_bytes": 298,
+  "total_elements": 6,
+  "svg_element_counts": {
+    "defs": 1,
+    "path": 1,
+    "svg": 1,
+    "use": 3
+  },
+  "non_svg_elements": 0,
+  "image_references": [],
+  "use_references": [
+    {
+      "index": 1,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "id_present"
+    },
+    {
+      "index": 2,
+      "attribute": "href",
+      "scope": "local_fragment",
+      "target_status": "missing_id"
+    },
+    {
+      "index": 3,
+      "attribute": "xlink:href",
+      "scope": "external",
+      "target_status": "not_loaded"
+    }
+  ],
+  "duplicate_id_count": 0,
+  "signals": {},
+  "unresolved": [
+    "appearance_not_evaluated",
+    "external_resources_not_loaded",
+    "hidden_and_definition_elements_included",
+    "path_data_not_validated",
+    "unresolved_use_reference",
+    "use_targets_not_expanded"
+  ],
+  "limits": {
+    "input_bytes": 1048576,
+    "elements": 10000,
+    "depth": 256
+  }
+}

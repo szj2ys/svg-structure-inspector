@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60 20">
+  <defs>
+    <path id="tick" d="M2 10 L8 16 L18 3" fill="none" stroke="#222"/>
+  </defs>
+  <use href="#tick"/>
+  <use href="#missing" x="20"/>
+  <use xlink:href="icons.svg#tick" x="40"/>
+</svg>
