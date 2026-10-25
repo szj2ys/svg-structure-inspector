@@ -1,0 +1,2 @@
+<!DOCTYPE svg [<!ENTITY example "This declaration must be rejected">]>
+<svg xmlns="http://www.w3.org/2000/svg"><text>&example;</text></svg>

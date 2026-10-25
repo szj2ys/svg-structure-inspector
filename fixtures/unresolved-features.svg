@@ -1,0 +1,11 @@
+<?xml-stylesheet type="text/css" href="https://example.invalid/theme.css"?>
+<svg xmlns="http://www.w3.org/2000/svg" xml:base="https://example.invalid/assets/" viewBox="0 0 20 20" onload="throw new Error('This must never run')">
+  <style>.paint { fill: url(https://example.invalid/paint.svg#paint); }</style>
+  <script><![CDATA[throw new Error("This must never run");]]></script>
+  <rect id="tile" width="20" height="20" class="paint"/>
+  <use href="#tile"/>
+  <filter id="effect"><feImage href="texture.png"/></filter>
+  <foreignObject width="20" height="20">
+    <p xmlns="http://www.w3.org/1999/xhtml">Foreign content is not inspected.</p>
+  </foreignObject>
+</svg>
